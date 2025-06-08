@@ -4,215 +4,535 @@
   <meta charset="UTF-8" />
   <title>Calculateur de Score - Concours Spécifiques</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f4f6f8;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 40px 15px;
-      color: #333;
-      background-image: url("https://e0.pxfuel.com/wallpapers/90/509/desktop-wallpaper-light-sky-stars-background-ambient-light.jpg");
-    }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #002f4b 0%, #dc4225 100%);
+  background-image: url("https://e0.pxfuel.com/wallpapers/90/509/desktop-wallpaper-light-sky-stars-background-ambient-light.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 15px;
+  animation: backgroundMove 20s linear infinite;
+  color: #333;
+  font-family: Segoe UI;
+}
 
-    .container {
-      background-color: #ffffffb1;
-      padding: 35px;
-      border-radius: 12px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-      transition: transform 0.3s ease;
-    }
+@keyframes backgroundMove {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
 
-    .container:hover {
-      transform: translateY(-5px);
-    }
+.container {
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  padding: 35px;
+  border-radius: 16px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: fadeInUp 0.8s ease forwards;
+  transform: translateY(20px);
+  opacity: 0;
+}
 
-    h1 {
-      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-      text-align: center;
-      margin-bottom: 25px;
-      color: #00796b;
-      font-size: 1.8rem;
-    }
+@keyframes fadeInUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 600;
-      color: #555;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #00796b;
+  font-size: 2rem;
+  font-weight: 700;
+  font-family: monospace;
+  font-style: italic;
+}
 
-    input[type="number"],
-    select {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      margin-bottom: 20px;
-      background-color: #f9f9f9;
-      transition: border-color 0.3s;
-    }
+.tabs {
+  display: flex;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #00796b;
+}
 
-    input[type="number"]:focus,
-    select:focus {
-      border-color: #00796b;
-      outline: none;
-    }
+.tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #e0f2f1;
+  border: none;
+  border-radius: 8px 8px 0 0;
+  margin-right: 5px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
 
-    button {
-      width: 100%;
-      padding: 14px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      color: #fff;
-      background-color: #00796b;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s, transform 0.2s;
-    }
+.tab.active {
+  background-color: #00796b;
+  color: white;
+}
 
-    button:hover {
-      background-color: #00695c;
-      transform: translateY(-2px);
-    }
+.tab-content {
+  display: none;
+}
 
-    button:active {
-      transform: translateY(0);
-    }
+.tab-content.active {
+  display: block;
+}
 
-    .result {
-      margin-top: 25px;
-      padding: 18px;
-      background-color: #e0f2f1;
-      border-left: 5px solid #00796b;
-      border-radius: 6px;
-      color: #004d40;
-      font-size: 1rem;
-      line-height: 1.5;
-    }
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
 
-    .row {
-      display: flex;
-      gap: 20px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
+input[type="number"],
+select {
+  width: 100%;
+  padding: 12px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+  background-color: #f8f9fa;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
 
-    .col {
-      flex: 1;
-      min-width: 240px;
-    }
+input[type="number"]:focus,
+select:focus {
+  border-color: #00796b;
+  background-color: #ffffff;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0,121,107,0.3);
+}
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+button {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #00796b;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
 
-    .container, .result {
-      animation: fadeIn 0.5s ease-in-out;
-    }
+button:hover {
+  background-color: #00695c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.result {
+  margin-top: 25px;
+  padding: 18px;
+  background-color: #e0f2f1;
+  border-left: 5px solid #00796b;
+  border-radius: 10px;
+  color: #004d40;
+  font-size: 1rem;
+  line-height: 1.6;
+  animation: fadeInUp 0.6s ease;
+}
+
+.row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.col {
+  flex: 1;
+  min-width: 240px;
+}
+
+.lang-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.lang-col {
+  flex: 1;
+}
+
+.hidden {
+  display: none;
+}
+
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Calculateur de Score - Concours Spécifiques 2025</h1>
-
-    <div class="row">
-      <div class="col">
-        <label for="bac">Moyenne du Bac :</label>
-        <input type="number" id="bac" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
-      </div>
-      <div class="col">
-        <label for="naissance">Année de naissance :</label>
-        <select id="naissance">
-          <option value="" disabled selected>-- Choisissez --</option>
-          <option value="2003">2003</option>
-          <option value="2002">2002</option>
-          <option value="2001">2001</option>
-          <option value="2000">2000</option>
-        </select>
-      </div>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="openTab('premiere')">1ère Année</button>
+      <button class="tab" onclick="openTab('deuxieme')">2ème Année</button>
     </div>
+    
+    <!-- Première Année Tab -->
+    <div id="premiere" class="tab-content active">
+      <div class="row">
+        <div class="col">
+          <label for="bac">Moyenne du Bac :</label>
+          <input type="number" id="bac" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="naissance">Année de naissance :</label>
+          <select id="naissance">
+            <option value="" disabled selected>-- Choisissez --</option>
+            <option value="2003">2003</option>
+            <option value="2002">2002</option>
+            <option value="2001">2001</option>
+            <option value="2000">2000</option>
+            <option value="1999">1999</option>
+          </select>
+        </div>
+      </div>
 
-    <div class="row">
-      <div class="col">
-        <label for="l1">Moyenne L1 :</label>
-        <input type="number" id="l1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+      <div class="row">
+        <div class="col">
+          <label for="mg1">Moyenne générale L1 :</label>
+          <input type="number" id="mg1" step="0.01" min="0" max="20" placeholder="Moyenne de premières année" />
+        </div>
+        <div class="col">
+          <label for="mg2">Moyenne générale L2 :</label>
+          <input type="number" id="mg2" step="0.01" min="0" max="20" placeholder="Moyenne de deuxiéme année" />
+        </div>
       </div>
-      <div class="col">
-        <label for="l2">Moyenne L2 :</label>
-        <input type="number" id="l2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+
+      <h3>Rangs</h3>
+      <div class="row">
+        <div class="col">
+          <label for="rang1">Rang L1 :</label>
+          <input type="number" id="rang1" min="1" placeholder="Ex: 15" />
+        </div>
+        <div class="col">
+          <label for="effectif1">Effectif L1 :</label>
+          <input type="number" id="effectif1" min="1" placeholder="Ex: 120" />
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="rang2">Rang L2 :</label>
+          <input type="number" id="rang2" min="1" placeholder="Ex: 15" />
+        </div>
+        <div class="col">
+          <label for="effectif2">Effectif L2 :</label>
+          <input type="number" id="effectif2" min="1" placeholder="Ex: 120" />
+        </div>
+      </div>
+
+      <h3>Moyennes des Langues</h3>
+      <div class="row">
+        <div class="col">
+          <label for="fr1">Français L1 :</label>
+          <input type="number" id="fr1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="fr2">Français L2 :</label>
+          <input type="number" id="fr2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="ang1">Anglais L1 :</label>
+          <input type="number" id="ang1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="ang2">Anglais L2 :</label>
+          <input type="number" id="ang2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="E">Score E :</label>
+          <input type="number" id="E" step="0.01" min="0" max="20" placeholder="Score E" />
+          <i><em>Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.</em></i>
+        </div>
+      </div>
+
+      <button onclick="calculerScorePremiere()">Calculer le Score (1ère Année)</button>
+      <div class="result" id="resultat-premiere"></div>
     </div>
+    
 
-    <div class="row">
-      <div class="col">
-        <label for="l3">Moyenne L3 :</label>
-        <input type="number" id="l3" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+
+    <!-- Deuxième Année Tab -->
+    <div id="deuxieme" class="tab-content">
+      <div class="row">
+        <div class="col">
+          <label for="bac2">Moyenne du Bac :</label>
+          <input type="number" id="bac2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="naissance2">Année de naissance :</label>
+          <select id="naissance2">
+            <option value="" disabled selected>-- Choisissez --</option>
+            <option value="2003">2003</option>
+            <option value="2002">2002</option>
+            <option value="2001">2001</option>
+            <option value="2000">2000</option>
+            <option value="1999">1999</option>
+          </select>
+        </div>
       </div>
-      <div class="col">
-        <label for="m1">Moyenne M1 :</label>
-        <input type="number" id="m1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+
+      <div class="row">
+        <div class="col">
+          <label for="l1">Moyenne L1 :</label>
+          <input type="number" id="l1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="l2">Moyenne L2 :</label>
+          <input type="number" id="l2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
       </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="l3">Moyenne L3 :</label>
+          <input type="number" id="l3" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+        <div class="col">
+          <label for="m1">Moyenne M1 :</label>
+          <input type="number" id="m1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <label for="redoublant">Redoublant ?</label>
+          <select id="redoublant">
+            <option value="non" selected>Non</option>
+            <option value="oui">Oui</option>
+          </select>
+        </div>
+      </div>
+
+      <button onclick="calculerScoreDeuxieme()">Calculer le Score (2ème Année)</button>
+      <div class="result" id="resultat-deuxieme"></div>
     </div>
-
-    <div class="row">
-      <div class="col">
-        <label for="redoublant">Redoublant ?</label>
-        <select id="redoublant">
-          <option value="non" selected>Non</option>
-          <option value="oui">Oui</option>
-        </select>
-      </div>
-    </div>
-
-    <button onclick="calculerScore()">Calculer le Score</button>
-    <div class="result" id="resultat"></div>
   </div>
 
   <script>
-    function calculerScore() {
-      let l1 = parseFloat(document.getElementById("l1").value);
-      let l2 = parseFloat(document.getElementById("l2").value);
-      let l3 = parseFloat(document.getElementById("l3").value);
-      let m1 = parseFloat(document.getElementById("m1").value);
-      let bac = parseFloat(document.getElementById("bac").value);
-      let naissance = parseInt(document.getElementById("naissance").value);
-      let redoublant = document.getElementById("redoublant").value;
-      let anneeConcours = 2025;
-
-      if (isNaN(l1) || isNaN(l2) || isNaN(l3) || isNaN(m1) || isNaN(bac) || isNaN(naissance)) {
-        document.getElementById("resultat").textContent = "Veuillez remplir tous les champs correctement.";
+    function openTab(tabName) {
+      // Hide all tab contents
+      const tabContents = document.getElementsByClassName("tab-content");
+      for (let i = 0; i < tabContents.length; i++) {
+        tabContents[i].classList.remove("active");
+      }
+      
+      // Remove active class from all tabs
+      const tabs = document.getElementsByClassName("tab");
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+      }
+      
+      // Show the selected tab content and mark the tab as active
+      document.getElementById(tabName).classList.add("active");
+      event.currentTarget.classList.add("active");
+    }
+    
+    function calculerScorePremiere() {
+      // Get input values
+      const bac = parseFloat(document.getElementById("bac").value);
+      const naissance = parseInt(document.getElementById("naissance").value);
+      const mg1 = parseFloat(document.getElementById("mg1").value);
+      const mg2 = parseFloat(document.getElementById("mg2").value);
+      const rang1 = parseInt(document.getElementById("rang1").value);
+      const effectif1 = parseInt(document.getElementById("effectif1").value);
+      const rang2 = parseInt(document.getElementById("rang2").value);
+      const effectif2 = parseInt(document.getElementById("effectif2").value);
+      const fr1 = parseFloat(document.getElementById("fr1").value);
+      const fr2 = parseFloat(document.getElementById("fr2").value);
+      const ang1 = parseFloat(document.getElementById("ang1").value);
+      const ang2 = parseFloat(document.getElementById("ang2").value);
+      
+      // Validate inputs
+      if (isNaN(bac) || isNaN(naissance) || isNaN(mg1)|| isNaN(mg2) || isNaN(rang1) || isNaN(effectif1) || 
+          isNaN(rang2) || isNaN(effectif2) || isNaN(fr1) || isNaN(fr2) || isNaN(ang1) || isNaN(ang2)) {
+        document.getElementById("resultat-premiere").textContent = "Veuillez remplir tous les champs correctement.";
         return;
       }
+      
+      // Calculate M
+      let M;
+      mg = (mg1+mg2)/2;
 
-      let Mg = (l1 + l2 + l3 + m1) / 4;
-      let M = (Mg >= 15) ? 100 : (Mg > 10 ? 20 * (Mg - 10) : 0);
-      let B1 = naissance >= (anneeConcours - 24) ? 5 : 0;
-      let B2 = bac >= 16 ? 20 : bac >= 14 ? 15 : bac >= 12 ? 10 : bac >= 11 ? 5 : 0;
-      let C = redoublant === "oui" ? 0.8 : 1.0;
-      let score = Math.round(C * (M + B1 + B2) * 100) / 100;
-
-      document.getElementById("resultat").innerHTML =
-        `<strong>Score obtenu :</strong> ${score}<br><br>
-         <strong>Détails :</strong><br>
-         Moyenne Générale (Mg) : ${Mg.toFixed(2)}<br>
-         M = ${M}<br>
-         B1 (age) = ${B1}<br>
-         B2 (bac) = ${B2}<br>
-         C (coefficient) = ${C}`;
+      if (mg >= 15) {
+        M = 100;
+      } else if (mg > 10) {
+        M = 20 * (mg - 10);
+      } else {
+        M = 0;
+      }
+      
+      // Calculate R (rang)
+      const r1 = (rang1 - 1) / effectif1;
+      const r2 = (rang2 - 1) / effectif2;
+      
+      let R1, R2;
+      
+      if (r1 <= 0.3) {
+        R1 = 100 - (700 * r1) / 3;
+      } else {
+        R1 = 0;
+      }
+      
+      if (r2 <= 0.3) {
+        R2 = 100 - (700 * r2) / 3;
+      } else {
+        R2 = 0;
+      }
+      
+      const R = (R1 + R2) / 2;
+      
+      // Calculate B1 (bonification age)
+      const anneeConcours = new Date().getFullYear();
+      let B1;
+      if (naissance >= (anneeConcours - 25)) {
+        B1 = 5;
+      } else {
+        B1 = 0;
+      }
+      
+      // Calculate B2 (bonification bac)
+      let B2;
+      if (bac >= 16) {
+        B2 = 20;
+      } else if (bac >= 14) {
+        B2 = 15;
+      } else if (bac >= 12) {
+        B2 = 10;
+      } else if (bac >= 11) {
+        B2 = 5;
+      } else {
+        B2 = 0;
+      }
+      
+      // Calculate ML (moyenne langues)
+      const ML = (fr1 + fr2 + ang1 + ang2) / 4;
+      
+      // Calculate Score A
+      const scoreA = 0.2 * M + (1.4/3) * R + (5/6) * ML + (2/3) * (B1 + B2);
+      
+      // For this example, we'll assume scoreE is 50 (as it's specific to each school)
+      const scoreE = parseFloat(document.getElementById("E").value);;
+      
+      // Calculate Global Score
+      const scoreGlobal = (scoreA * 0.7 + scoreE * 0.3);
+      
+      // Display results
+      document.getElementById("resultat-premiere").innerHTML = `
+        <strong>Score Global :</strong> ${scoreGlobal.toFixed(2)} / 100<br><br>
+        <strong>Détails du calcul :</strong><br>
+        <strong>Score A :</strong> ${scoreA.toFixed(2)}<br>
+        - M (Moyenne) : ${M.toFixed(2)}<br>
+        - R (Rang) : ${R.toFixed(2)} (R1: ${R1.toFixed(2)}, R2: ${R2.toFixed(2)})<br>
+        - ML (Moyenne Langues) : ${ML.toFixed(2)}<br>
+        - B1 (Âge) : ${B1}<br>
+        - B2 (Bac) : ${B2}<br><br>
+        <strong>Score E :</strong> ${scoreE} <br>
+        <em>Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.</em>
+      `;
+    }
+    
+    function calculerScoreDeuxieme() {
+      // Get input values
+      const bac = parseFloat(document.getElementById("bac2").value);
+      const naissance = parseInt(document.getElementById("naissance2").value);
+      const l1 = parseFloat(document.getElementById("l1").value);
+      const l2 = parseFloat(document.getElementById("l2").value);
+      const l3 = parseFloat(document.getElementById("l3").value);
+      const m1 = parseFloat(document.getElementById("m1").value);
+      const redoublant = document.getElementById("redoublant").value;
+      
+      // Validate inputs
+      if (isNaN(bac) || isNaN(naissance) || isNaN(l1) || isNaN(l2) || isNaN(l3) || isNaN(m1)) {
+        document.getElementById("resultat-deuxieme").textContent = "Veuillez remplir tous les champs correctement.";
+        return;
+      }
+      
+      // Calculate Mg (moyenne générale)
+      const Mg = (l1 + l2 + l3 + m1) / 4;
+      
+      // Calculate M
+      let M;
+      if (Mg >= 15) {
+        M = 100;
+      } else if (Mg > 10) {
+        M = 20 * (Mg - 10);
+      } else {
+        M = 0;
+      }
+      
+      // Calculate B1 (bonification age)
+      const anneeConcours = new Date().getFullYear();
+      let B1;
+      if (naissance >= (anneeConcours - 25)) {
+        B1 = 5;
+      } else {
+        B1 = 0;
+      }
+      
+      // Calculate B2 (bonification bac)
+      let B2;
+      if (bac >= 16) {
+        B2 = 20;
+      } else if (bac >= 14) {
+        B2 = 15;
+      } else if (bac >= 12) {
+        B2 = 10;
+      } else if (bac >= 11) {
+        B2 = 5;
+      } else {
+        B2 = 0;
+      }
+      
+      // Calculate coefficient for redoublant
+      const C = redoublant === "oui" ? 0.8 : 1.0;
+      
+      // Calculate score
+      const score = Math.round(C * (M + B1 + B2) * 100) / 100;
+      
+      // Display results
+      document.getElementById("resultat-deuxieme").innerHTML = `
+        <strong>Score obtenu :</strong> ${score}<br><br>
+        <strong>Détails :</strong><br>
+        Moyenne Générale (Mg) : ${Mg.toFixed(2)}<br>
+        M = ${M.toFixed(2)}<br>
+        B1 (âge) = ${B1}<br>
+        B2 (bac) = ${B2}<br>
+        C (coefficient redoublant) = ${C}<br><br>
+        <em>Note : Ce calcul est pour la deuxième année. Les critères peuvent varier selon les établissements.</em>
+      `;
     }
   </script>
 </body>
