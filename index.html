@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <title>Calculateur de Score - Concours Spécifiques</title>
   <style>
+:root {
+  --primary-color: #1a4d6e;
+  --secondary-color: #ff7b25;
+  --light-color: #f5f9ff;
+  --dark-color: #0a2e38;
+  --text-color: #333;
+  --border-radius: 10px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -11,37 +22,196 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #002f4b 0%, #dc4225 100%);
-  background-image: url("https://e0.pxfuel.com/wallpapers/90/509/desktop-wallpaper-light-sky-stars-background-ambient-light.jpg");
-  background-size: cover;
-  background-attachment: fixed;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: radial-gradient(ellipse at bottom, #1B2735 0%, #090A0F 100%);
+  overflow-x: hidden;
+  min-height: 100vh;
+  padding: 40px 15px;
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  min-height: 100vh;
-  padding: 40px 15px;
-  animation: backgroundMove 20s linear infinite;
-  color: #333;
-  font-family: Segoe UI;
 }
 
-@keyframes backgroundMove {
-  0% { background-position: 0% 0%; }
-  100% { background-position: 100% 100%; }
+.result-container {
+  margin-top: 30px;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
-.container {
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 35px;
-  border-radius: 16px;
-  max-width: 800px;
+.score-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.score-value {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 10px 0;
+  background: linear-gradient(135deg, var(--secondary-color), #ff9a44);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.score-details {
+  padding: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  align-items: center;
+}
+
+.detail-label {
+  font-weight: 600;
+  color: var(--primary-color);
+  flex: 1;
+}
+
+.detail-value {
+  font-weight: 600;
+  flex: 1;
+  text-align: right;
+}
+
+.progress-container {
+  flex: 2;
+  height: 20px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 0 15px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary-color), #ff9a44);
+  border-radius: 10px;
+  transition: width 1s ease-out;
+}
+
+.score-breakdown {
+  margin-top: 25px;
+  background: var(--light-color);
+  padding: 20px;
+  border-radius: var(--border-radius);
+}
+
+.breakdown-title {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.breakdown-title::before {
+  content: "📊";
+  margin-right: 10px;
+}
+
+.note {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px dashed #ddd;
+}
+
+
+/* Animation des étoiles */
+.stars {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  height: 100%;
+  z-index: -1;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  border-radius: 50%;
+  animation: twinkle var(--duration, 5s) infinite ease-in-out;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+/* Effet de météores */
+.meteor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1),
+              0 0 0 8px rgba(255, 255, 255, 0.1),
+              0 0 20px rgba(255, 255, 255, 1);
+  animation: meteor 3s linear infinite;
+}
+
+.meteor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.8));
+}
+
+@keyframes meteor {
+  0% {
+    transform: rotate(215deg) translateX(0);
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(215deg) translateX(-1000px);
+    opacity: 0;
+  }
+}
+
+/* Le reste de votre CSS reste inchangé */
+.container {
+  background-color: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  max-width: 850px;
+  width: 100%;
+  box-shadow: var(--box-shadow);
   animation: fadeInUp 0.8s ease forwards;
-  transform: translateY(20px);
-  opacity: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
+  position: relative;
+  overflow: hidden;
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
 }
 
 @keyframes fadeInUp {
@@ -53,112 +223,260 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #00796b;
-  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  font-size: 2.4rem;
   font-weight: 700;
-  font-family: monospace;
-  font-style: italic;
+  position: relative;
+  padding-bottom: 15px;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: var(--secondary-color);
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+}
+
+h3 {
+  color: var(--primary-color);
+  margin: 25px 0 18px;
+  padding-bottom: 10px;
+  border-bottom: 2px dashed var(--secondary-color);
+  width: 100%;
+  font-size: 1.3rem;
+  position: relative;
+}
+
+h3::before {
+  content: '◆';
+  color: var(--secondary-color);
+  position: absolute;
+  left: -15px;
+  top: -2px;
 }
 
 .tabs {
   display: flex;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #00796b;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e0e0e0;
+  position: relative;
+  justify-content: center;
+}
+
+.tabs::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: var(--tab-position, 0);
+  height: 3px;
+  width: 50%;
+  background: var(--secondary-color);
+  transition: var(--transition);
+  border-radius: 3px 3px 0 0;
 }
 
 .tab {
-  padding: 10px 20px;
+  padding: 12px 30px;
   cursor: pointer;
-  background-color: #e0f2f1;
+  background-color: transparent;
   border: none;
-  border-radius: 8px 8px 0 0;
-  margin-right: 5px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: var(--transition);
+  color: #666;
+  position: relative;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-weight: 700;
 }
 
 .tab.active {
-  background-color: #00796b;
-  color: white;
+  color: var(--primary-color);
+}
+
+.tab:hover {
+  color: var(--primary-color);
 }
 
 .tab-content {
   display: none;
+  animation: fadeIn 0.5s ease;
 }
 
 .tab-content.active {
   display: block;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   font-weight: 600;
-  color: #444;
+  color: var(--primary-color);
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 5px;
+}
+
+label::after {
+  content: ':';
+  position: absolute;
+  right: -5px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--secondary-color);
+  transition: var(--transition);
+}
+
+.input-group:focus-within::after {
+  width: 100%;
 }
 
 input[type="number"],
 select {
   width: 100%;
-  padding: 12px;
+  padding: 14px 18px;
   font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  margin-bottom: 20px;
+  border-radius: var(--border-radius);
+  border: 1px solid #ddd;
   background-color: #f8f9fa;
-  transition: all 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  transition: var(--transition);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-family: inherit;
+  appearance: none;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+select {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a4d6e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 15px;
+  padding-right: 40px;
 }
 
 input[type="number"]:focus,
 select:focus {
-  border-color: #00796b;
+  border-color: var(--secondary-color);
   background-color: #ffffff;
   outline: none;
-  box-shadow: 0 0 5px rgba(0,121,107,0.3);
+  box-shadow: 0 0 0 3px rgba(255, 123, 37, 0.2);
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
 }
 
 button {
-  width: 100%;
-  padding: 14px;
+  padding: 16px;
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 600;
   color: #fff;
-  background-color: #00796b;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--border-radius);
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: var(--transition);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+button::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 200%;
+  height: 200%;
+  background: rgba(255,255,255,0.1);
+  transform: rotate(30deg);
+  transition: var(--transition);
+}
+
+button:hover::after {
+  left: 100%;
+}
+
+button.calculate {
+  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary-color), #0d3a5a);
+}
+
+button.reset {
+  background-color: var(--secondary-color);
+  background: linear-gradient(135deg, var(--secondary-color), #e66915);
 }
 
 button:hover {
-  background-color: #00695c;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
 }
 
 button:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transform: translateY(1px);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
 }
 
 .result {
-  margin-top: 25px;
-  padding: 18px;
-  background-color: #e0f2f1;
-  border-left: 5px solid #00796b;
-  border-radius: 10px;
-  color: #004d40;
-  font-size: 1rem;
-  line-height: 1.6;
-  animation: fadeInUp 0.6s ease;
+  margin-top: 30px;
+  padding: 25px;
+  background-color: var(--light-color);
+  border-left: 5px solid var(--secondary-color);
+  border-radius: var(--border-radius);
+  color: var(--primary-color);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  animation: fadeIn 0.6s ease;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.05);
+  position: relative;
+}
+
+.result::before {
+  content: 'ℹ️';
+  position: absolute;
+  left: 10px;
+  top: -15px;
+  background: white;
+  padding: 5px 10px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-size: 1.2rem;
 }
 
 .row {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
@@ -168,25 +486,145 @@ button:active {
   min-width: 240px;
 }
 
-.lang-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.lang-col {
-  flex: 1;
-}
-
 .hidden {
   display: none;
 }
 
+em {
+  color: #666;
+  font-size: 0.9rem;
+  display: block;
+  margin-top: 8px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+strong {
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+/* Tooltip style */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  margin-left: 5px;
+  cursor: help;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: var(--dark-color);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-size: 0.85rem;
+  font-weight: normal;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--dark-color) transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 30px 20px;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .tab {
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .row {
+    gap: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 20px 10px;
+  }
+  
+  .container {
+    padding: 25px 15px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  input[type="number"],
+  select {
+    padding: 12px 15px;
+  }
+  
+  button {
+    padding: 14px;
+  }
+}
+
+/* Floating animation for important elements */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+.calculate {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation for attention */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.tab.active {
+  animation: pulse 0.5s ease;
+}
   </style>
 </head>
 <body>
+  <div class="stars" id="stars"></div>
+  <div class="meteor" style="top: 150px; left: -100px; animation-delay: 1s;"></div>
+  <div class="meteor" style="top: 300px; left: -200px; animation-delay: 2.5s;"></div>
+  <div class="meteor" style="top: 450px; left: -50px; animation-delay: 0.5s;"></div>
+
   <div class="container">
-    <h1>Calculateur de Score - Concours Spécifiques 2025</h1>
+    <h1>Calculateur de Score<br>Concours Spécifiques 2025</h1>
     
     <div class="tabs">
       <button class="tab active" onclick="openTab('premiere')">1ère Année</button>
@@ -197,171 +635,317 @@ button:active {
     <div id="premiere" class="tab-content active">
       <div class="row">
         <div class="col">
-          <label for="bac">Moyenne du Bac :</label>
-          <input type="number" id="bac" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="bac">Moyenne du Bac</label>
+            <input type="number" id="bac" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="naissance">Année de naissance :</label>
-          <select id="naissance">
-            <option value="" disabled selected>-- Choisissez --</option>
-            <option value="2003">2003</option>
-            <option value="2002">2002</option>
-            <option value="2001">2001</option>
-            <option value="2000">2000</option>
-            <option value="1999">1999</option>
-          </select>
+          <div class="input-group">
+            <label for="naissance">Année de naissance</label>
+            <select id="naissance">
+              <option value="" disabled selected>-- Choisissez --</option>
+              <option value="2004">2004</option>
+              <option value="2003">2003</option>
+              <option value="2002">2002</option>
+              <option value="2001">2001</option>
+              <option value="2000">2000</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="mg1">Moyenne générale L1 :</label>
-          <input type="number" id="mg1" step="0.01" min="0" max="20" placeholder="Ex: 15.5" />
+          <div class="input-group">
+            <label for="mg1">Moyenne générale L1</label>
+            <input type="number" id="mg1" step="0.01" min="0" max="20" placeholder="Ex: 15.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="mg2">Moyenne générale L2 :</label>
-          <input type="number" id="mg2" step="0.01" min="0" max="20" placeholder="Ex: 15.5" />
+          <div class="input-group">
+            <label for="mg2">Moyenne générale L2</label>
+            <input type="number" id="mg2" step="0.01" min="0" max="20" placeholder="Ex: 15.5" />
+          </div>
         </div>
       </div>
 
       <h3>Rangs</h3>
       <div class="row">
         <div class="col">
-          <label for="rang1">Rang L1 :</label>
-          <input type="number" id="rang1" min="1" placeholder="Ex: 15" />
+          <div class="input-group">
+            <label for="rang1">Rang L1</label>
+            <input type="number" id="rang1" min="1" placeholder="Ex: 15" />
+          </div>
         </div>
         <div class="col">
-          <label for="effectif1">Effectif L1 :</label>
-          <input type="number" id="effectif1" min="1" placeholder="Ex: 120" />
+          <div class="input-group">
+            <label for="effectif1">Effectif L1</label>
+            <input type="number" id="effectif1" min="1" placeholder="Ex: 120" />
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="rang2">Rang L2 :</label>
-          <input type="number" id="rang2" min="1" placeholder="Ex: 15" />
+          <div class="input-group">
+            <label for="rang2">Rang L2</label>
+            <input type="number" id="rang2" min="1" placeholder="Ex: 15" />
+          </div>
         </div>
         <div class="col">
-          <label for="effectif2">Effectif L2 :</label>
-          <input type="number" id="effectif2" min="1" placeholder="Ex: 120" />
+          <div class="input-group">
+            <label for="effectif2">Effectif L2</label>
+            <input type="number" id="effectif2" min="1" placeholder="Ex: 120" />
+          </div>
         </div>
       </div>
 
       <h3>Moyennes des Langues</h3>
       <div class="row">
         <div class="col">
-          <label for="fr1">Français L1 :</label>
-          <input type="number" id="fr1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="fr1">Français L1</label>
+            <input type="number" id="fr1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="fr2">Français L2 :</label>
-          <input type="number" id="fr2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="fr2">Français L2</label>
+            <input type="number" id="fr2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="ang1">Anglais L1 :</label>
-          <input type="number" id="ang1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="ang1">Anglais L1</label>
+            <input type="number" id="ang1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="ang2">Anglais L2 :</label>
-          <input type="number" id="ang2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="ang2">Anglais L2</label>
+            <input type="number" id="ang2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="E">Score E :</label>
-          <input type="number" id="E" step="0.01" min="0" max="20" placeholder="Score E" />
-          <i><em>Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.</em></i>
+          <div class="input-group">
+            <label for="E">Score E <span class="tooltip">ℹ️<span class="tooltiptext">Le score E est spécifique à chaque établissement</span></span></label>
+            <input type="number" id="E" step="0.01" min="0" max="20" placeholder="Score E" />
+            <em>Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.</em>
+          </div>
         </div>
       </div>
 
-      <button onclick="calculerScorePremiere()">Calculer le Score (1ère Année)</button>
-      <div class="result" id="resultat-premiere"></div>
+      <div class="button-group">
+        <button class="calculate" onclick="calculerScorePremiere()">📊 Calculer le Score</button>
+        <button class="reset" onclick="resetForm('premiere')">🔄 Réinitialiser</button>
+      </div>
+      
+      <div id="resultat-premiere" class="result-container hidden">
+        <div class="score-header">
+          VOTRE SCORE FINAL
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <div class="score-value" id="score-global">0.00</div>
+          <div>/ 100 points</div>
+        </div>
+        
+        <div class="score-details">
+          <div class="detail-row">
+            <div class="detail-label">Score A</div>
+            <div class="progress-container">
+              <div class="progress-bar" id="score-a-bar" style="width: 0%"></div>
+            </div>
+            <div class="detail-value" id="score-a">0.00</div>
+          </div>
+          
+          <div class="detail-row">
+            <div class="detail-label">Score E</div>
+            <div class="progress-container">
+              <div class="progress-bar" id="score-e-bar" style="width: 0%"></div>
+            </div>
+            <div class="detail-value" id="score-e">0.00</div>
+          </div>
+        </div>
+        
+        <div class="score-breakdown">
+          <div class="breakdown-title">Détails du calcul</div>
+          <div id="score-details-content">
+            <!-- Les détails seront insérés ici par JavaScript -->
+          </div>
+          <div class="note">
+            Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.
+          </div>
+        </div>
+      </div>
     </div>
-    
-
 
     <!-- Deuxième Année Tab -->
     <div id="deuxieme" class="tab-content">
       <div class="row">
         <div class="col">
-          <label for="bac2">Moyenne du Bac :</label>
-          <input type="number" id="bac2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="bac2">Moyenne du Bac</label>
+            <input type="number" id="bac2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="naissance2">Année de naissance :</label>
-          <select id="naissance2">
-            <option value="" disabled selected>-- Choisissez --</option>
-            <option value="2003">2003</option>
-            <option value="2002">2002</option>
-            <option value="2001">2001</option>
-            <option value="2000">2000</option>
-            <option value="1999">1999</option>
-          </select>
+          <div class="input-group">
+            <label for="naissance2">Année de naissance</label>
+            <select id="naissance2">
+              <option value="" disabled selected>-- Choisissez --</option>
+              <option value="2003">2003</option>
+              <option value="2002">2002</option>
+              <option value="2001">2001</option>
+              <option value="2000">2000</option>
+              <option value="1999">1999</option>
+            </select>
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="l1">Moyenne L1 :</label>
-          <input type="number" id="l1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="l1">Moyenne L1</label>
+            <input type="number" id="l1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="l2">Moyenne L2 :</label>
-          <input type="number" id="l2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="l2">Moyenne L2</label>
+            <input type="number" id="l2" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="l3">Moyenne L3 :</label>
-          <input type="number" id="l3" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="l3">Moyenne L3 (sans PFE)</label>
+            <input type="number" id="l3" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
         <div class="col">
-          <label for="m1">Moyenne M1 :</label>
-          <input type="number" id="m1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          <div class="input-group">
+            <label for="m1">Moyenne M1</label>
+            <input type="number" id="m1" step="0.01" min="0" max="20" placeholder="Ex: 14.5" />
+          </div>
         </div>
       </div>
 
       <div class="row">
         <div class="col">
-          <label for="redoublant">Redoublant ?</label>
-          <select id="redoublant">
-            <option value="non" selected>Non</option>
-            <option value="oui">Oui</option>
-          </select>
+          <div class="input-group">
+            <label for="redoublant">Redoublant ?</label>
+            <select id="redoublant">
+              <option value="non" selected>Non</option>
+              <option value="oui">Oui</option>
+            </select>
+          </div>
         </div>
       </div>
 
-      <button onclick="calculerScoreDeuxieme()">Calculer le Score (2ème Année)</button>
-      <div class="result" id="resultat-deuxieme"></div>
+      <div class="button-group">
+        <button class="calculate" onclick="calculerScoreDeuxieme()">📊 Calculer le Score</button>
+        <button class="reset" onclick="resetForm('deuxieme')">🔄 Réinitialiser</button>
+      </div>
+
+      <div id="resultat-deuxieme" class="result-container hidden">
+        <div class="score-header">
+          VOTRE SCORE FINAL
+        </div>
+        <div style="text-align: center; padding: 20px;">
+          <div class="score-value" id="score-global-2">0.00</div>
+          <div>/ 125 points</div>
+        </div>
+        
+        <div class="score-breakdown">
+          <div class="breakdown-title">Détails du calcul</div>
+          <div id="score-details-content-2">
+            <!-- Les détails seront insérés ici par JavaScript -->
+          </div>
+          <div class="note">
+            Note : Ce calcul est pour la deuxième année. Les critères peuvent varier selon les établissements.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <script>
+<script>
+    // Création des étoiles dynamiques
+    document.addEventListener('DOMContentLoaded', function() {
+      const starsContainer = document.getElementById('stars');
+      const starsCount = 200;
+      
+      for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Taille aléatoire entre 1px et 3px
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        
+        // Position aléatoire
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        
+        // Durée d'animation aléatoire
+        star.style.setProperty('--duration', `${Math.random() * 5 + 3}s`);
+        
+        // Délai d'animation aléatoire
+        star.style.animationDelay = `${Math.random() * 5}s`;
+        
+        starsContainer.appendChild(star);
+      }
+    });
+
     function openTab(tabName) {
-      // Hide all tab contents
       const tabContents = document.getElementsByClassName("tab-content");
       for (let i = 0; i < tabContents.length; i++) {
         tabContents[i].classList.remove("active");
       }
       
-      // Remove active class from all tabs
       const tabs = document.getElementsByClassName("tab");
       for (let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("active");
       }
       
-      // Show the selected tab content and mark the tab as active
       document.getElementById(tabName).classList.add("active");
       event.currentTarget.classList.add("active");
+      
+      const tabsContainer = document.querySelector('.tabs');
+      if (tabName === 'premiere') {
+        tabsContainer.style.setProperty('--tab-position', '0');
+      } else {
+        tabsContainer.style.setProperty('--tab-position', '50%');
+      }
+    }
+    
+    function resetForm(tabName) {
+      const form = document.getElementById(tabName);
+      const inputs = form.querySelectorAll('input, select');
+      
+      inputs.forEach(input => {
+        if (input.tagName === 'INPUT') {
+          input.value = '';
+        } else if (input.tagName === 'SELECT') {
+          input.selectedIndex = 0;
+        }
+      });
+      
+      document.getElementById(`resultat-${tabName}`).classList.add('hidden');
     }
     
     function calculerScorePremiere() {
-      // Get input values
       const bac = parseFloat(document.getElementById("bac").value);
       const naissance = parseInt(document.getElementById("naissance").value);
       const mg1 = parseFloat(document.getElementById("mg1").value);
@@ -375,14 +959,12 @@ button:active {
       const ang1 = parseFloat(document.getElementById("ang1").value);
       const ang2 = parseFloat(document.getElementById("ang2").value);
       
-      // Validate inputs
       if (isNaN(bac) || isNaN(naissance) || isNaN(mg1)|| isNaN(mg2) || isNaN(rang1) || isNaN(effectif1) || 
           isNaN(rang2) || isNaN(effectif2) || isNaN(fr1) || isNaN(fr2) || isNaN(ang1) || isNaN(ang2)) {
-        document.getElementById("resultat-premiere").textContent = "Veuillez remplir tous les champs correctement.";
+        alert("Veuillez remplir tous les champs correctement.");
         return;
       }
       
-      // Calculate M
       let M;
       mg = (mg1+mg2)/2;
 
@@ -394,7 +976,6 @@ button:active {
         M = 0;
       }
       
-      // Calculate R (rang)
       const r1 = (rang1 - 1) / effectif1;
       const r2 = (rang2 - 1) / effectif2;
       
@@ -414,7 +995,6 @@ button:active {
       
       const R = (R1 + R2) / 2;
       
-      // Calculate B1 (bonification age)
       const anneeConcours = new Date().getFullYear();
       let B1;
       if (naissance >= (anneeConcours - 25)) {
@@ -423,7 +1003,6 @@ button:active {
         B1 = 0;
       }
       
-      // Calculate B2 (bonification bac)
       let B2;
       if (bac >= 16) {
         B2 = 20;
@@ -437,35 +1016,53 @@ button:active {
         B2 = 0;
       }
       
-      // Calculate ML (moyenne langues)
       const ML = (fr1 + fr2 + ang1 + ang2) / 4;
       
-      // Calculate Score A
       const scoreA = 0.2 * M + (1.4/3) * R + (5/6) * ML + (2/3) * (B1 + B2);
       
-      // For this example, we'll assume scoreE is 50 (as it's specific to each school)
       const scoreE = parseFloat(document.getElementById("E").value);;
       
-      // Calculate Global Score
       const scoreGlobal = (scoreA * 0.7 + scoreE * 0.3);
       
-      // Display results
-      document.getElementById("resultat-premiere").innerHTML = `
-        <strong>Score Global :</strong> ${scoreGlobal.toFixed(2)} / 100<br><br>
-        <strong>Détails du calcul :</strong><br>
-        <strong>Score A :</strong> ${scoreA.toFixed(2)}<br>
-        - M (Moyenne) : ${M.toFixed(2)}<br>
-        - R (Rang) : ${R.toFixed(2)} (R1: ${R1.toFixed(2)}, R2: ${R2.toFixed(2)})<br>
-        - ML (Moyenne Langues) : ${ML.toFixed(2)}<br>
-        - B1 (Âge) : ${B1}<br>
-        - B2 (Bac) : ${B2}<br><br>
-        <strong>Score E :</strong> ${scoreE} <br>
-        <em>Note : Le score E est spécifique à chaque établissement et doit être obtenu séparément.</em>
+      document.getElementById('resultat-premiere').classList.remove('hidden');
+      document.getElementById('score-global').textContent = scoreGlobal.toFixed(2);
+      document.getElementById('score-a').textContent = scoreA.toFixed(2);
+      document.getElementById('score-e').textContent = scoreE.toFixed(2);
+      
+      // Animation des barres de progression
+      setTimeout(() => {
+        document.getElementById('score-a-bar').style.width = `${scoreA}%`;
+        document.getElementById('score-e-bar').style.width = `${scoreE}%`;
+      }, 100);
+      
+      // Détails du calcul
+      const detailsContent = `
+        <div class="detail-row">
+          <div class="detail-label">M (Moyenne)</div>
+          <div class="detail-value">${M.toFixed(2)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">R (Rang)</div>
+          <div class="detail-value">${R.toFixed(2)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">ML (Moyenne Langues)</div>
+          <div class="detail-value">${ML.toFixed(2)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">B1 (Âge)</div>
+          <div class="detail-value">${B1}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">B2 (Bac)</div>
+          <div class="detail-value">${B2}</div>
+        </div>
       `;
+      
+      document.getElementById('score-details-content').innerHTML = detailsContent;
     }
     
     function calculerScoreDeuxieme() {
-      // Get input values
       const bac = parseFloat(document.getElementById("bac2").value);
       const naissance = parseInt(document.getElementById("naissance2").value);
       const l1 = parseFloat(document.getElementById("l1").value);
@@ -474,16 +1071,13 @@ button:active {
       const m1 = parseFloat(document.getElementById("m1").value);
       const redoublant = document.getElementById("redoublant").value;
       
-      // Validate inputs
       if (isNaN(bac) || isNaN(naissance) || isNaN(l1) || isNaN(l2) || isNaN(l3) || isNaN(m1)) {
-        document.getElementById("resultat-deuxieme").textContent = "Veuillez remplir tous les champs correctement.";
+        alert("Veuillez remplir tous les champs correctement.");
         return;
       }
       
-      // Calculate Mg (moyenne générale)
       const Mg = (l1 + l2 + l3 + m1) / 4;
       
-      // Calculate M
       let M;
       if (Mg >= 15) {
         M = 100;
@@ -493,7 +1087,6 @@ button:active {
         M = 0;
       }
       
-      // Calculate B1 (bonification age)
       const anneeConcours = new Date().getFullYear();
       let B1;
       if (naissance >= (anneeConcours - 25)) {
@@ -502,7 +1095,6 @@ button:active {
         B1 = 0;
       }
       
-      // Calculate B2 (bonification bac)
       let B2;
       if (bac >= 16) {
         B2 = 20;
@@ -516,23 +1108,38 @@ button:active {
         B2 = 0;
       }
       
-      // Calculate coefficient for redoublant
       const C = redoublant === "oui" ? 0.8 : 1.0;
       
-      // Calculate score
       const score = Math.round(C * (M + B1 + B2) * 100) / 100;
       
-      // Display results
-      document.getElementById("resultat-deuxieme").innerHTML = `
-        <strong>Score obtenu :</strong> ${score}<br><br>
-        <strong>Détails :</strong><br>
-        Moyenne Générale (Mg) : ${Mg.toFixed(2)}<br>
-        M = ${M.toFixed(2)}<br>
-        B1 (âge) = ${B1}<br>
-        B2 (bac) = ${B2}<br>
-        C (coefficient redoublant) = ${C}<br><br>
-        <em>Note : Ce calcul est pour la deuxième année. Les critères peuvent varier selon les établissements.</em>
+      document.getElementById('resultat-deuxieme').classList.remove('hidden');
+      document.getElementById('score-global-2').textContent = score.toFixed(2);
+      
+      // Détails du calcul
+      const detailsContent = `
+        <div class="detail-row">
+          <div class="detail-label">Moyenne Générale (Mg)</div>
+          <div class="detail-value">${Mg.toFixed(2)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">M</div>
+          <div class="detail-value">${M.toFixed(2)}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">B1 (Âge)</div>
+          <div class="detail-value">${B1}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">B2 (Bac)</div>
+          <div class="detail-value">${B2}</div>
+        </div>
+        <div class="detail-row">
+          <div class="detail-label">Coefficient Redoublant</div>
+          <div class="detail-value">${C}</div>
+        </div>
       `;
+      
+      document.getElementById('score-details-content-2').innerHTML = detailsContent;
     }
   </script>
 </body>
